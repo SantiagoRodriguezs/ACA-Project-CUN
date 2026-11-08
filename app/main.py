@@ -12,6 +12,7 @@ FIELD_LABELS: dict[str, str] = {
     "description": "Descripción",
     "priority": "Prioridad",
     "status": "Estado",
+    "comment": "Comentario",
 }
 
 

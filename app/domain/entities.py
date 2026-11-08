@@ -53,16 +53,41 @@ class TaskCreate(BaseModel):
     )
 
 
+class TaskUpdate(BaseModel):
+    """Esquema para actualizar el estado, prioridad o agregar un comentario a una tarea."""
+
+    status: TaskStatus | None = Field(
+        default=None,
+        description="Nuevo estado de la tarea.",
+    )
+    priority: TaskPriority | None = Field(
+        default=None,
+        description="Nueva prioridad de la tarea.",
+    )
+    comment: str | None = Field(
+        default=None,
+        min_length=2,
+        max_length=300,
+        description="Comentario o nota de seguimiento para agregar a la tarea.",
+    )
+
+
 class TaskEntity(TaskCreate):
     """Entidad completa de una tarea registrada en el sistema.
 
     Attributes:
         id: Identificador único incremental.
         created_at: Fecha y hora de creación en UTC.
+        comments: Lista de comentarios o notas de seguimiento de la tarea.
     """
 
     model_config = ConfigDict(from_attributes=True)
 
     id: int = Field(..., description="Identificador único numérico.")
     created_at: datetime = Field(..., description="Fecha de creación en UTC.")
+    comments: list[str] = Field(
+        default_factory=list,
+        description="Historial de comentarios de seguimiento.",
+    )
+
 

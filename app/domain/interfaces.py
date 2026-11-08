@@ -2,7 +2,13 @@
 
 from typing import Protocol
 
-from app.domain.entities import TaskCreate, TaskEntity, TaskPriority, TaskStatus
+from app.domain.entities import (
+    TaskCreate,
+    TaskEntity,
+    TaskPriority,
+    TaskStatus,
+    TaskUpdate,
+)
 
 
 class TaskRepositoryProtocol(Protocol):
@@ -41,6 +47,17 @@ class TaskRepositoryProtocol(Protocol):
 
         Returns:
             Lista de entidades que cumplen los criterios.
+        """
+
+    def update(self, task_id: int, task_update: TaskUpdate) -> TaskEntity | None:
+        """Actualiza el estado, prioridad o comentarios de una tarea existente.
+
+        Args:
+            task_id: Identificador numérico de la tarea.
+            task_update: Campos a modificar o comentario a anexar.
+
+        Returns:
+            La entidad actualizada o None si no existe.
         """
 
     def delete(self, task_id: int) -> bool:

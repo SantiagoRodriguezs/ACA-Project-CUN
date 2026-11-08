@@ -125,6 +125,39 @@ def test_list_and_filter_tasks_returns_matching_items(
     assert filtered_items[0]["title"] == "Tarea 2"
 
 
+def test_update_task_status_and_add_comment_succeeds(
+    client: TestClient,
+    valid_auth_headers: dict[str, str],
+) -> None:
+    """Verifica el cambio de estado y la adición de comentarios de seguimiento."""
+    # Arrange
+    created = client.post(
+        "/api/v1/tasks",
+        json={"title": "Tarea con seguimiento"},
+        headers=valid_auth_headers,
+    ).json()
+    task_id = created["id"]
+
+    # Act
+    patch_res = client.patch(
+        f"/api/v1/tasks/{task_id}",
+        json={"status": "COMPLETADA", "comment": "Pruebas ejecutadas al 100%"},
+        headers=valid_auth_headers,
+    )
+    patch_missing = client.patch(
+        "/api/v1/tasks/999",
+        json={"status": "COMPLETADA"},
+        headers=valid_auth_headers,
+    )
+
+    # Assert
+    assert patch_res.status_code == 200
+    updated_data = patch_res.json()
+    assert updated_data["status"] == "COMPLETADA"
+    assert "Pruebas ejecutadas al 100%" in updated_data["comments"]
+    assert patch_missing.status_code == 404
+
+
 def test_get_and_delete_task_lifecycle_succeeds(
     client: TestClient,
     valid_auth_headers: dict[str, str],

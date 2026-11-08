@@ -1,6 +1,12 @@
 """Casos de uso y lógica de negocio para la gestión de tareas."""
 
-from app.domain.entities import TaskCreate, TaskEntity, TaskPriority, TaskStatus
+from app.domain.entities import (
+    TaskCreate,
+    TaskEntity,
+    TaskPriority,
+    TaskStatus,
+    TaskUpdate,
+)
 from app.domain.interfaces import TaskRepositoryProtocol
 
 
@@ -43,6 +49,10 @@ class TaskService:
     ) -> list[TaskEntity]:
         """Lista las tareas aplicando filtros opcionales."""
         return self._repository.list_all(status=status, priority=priority)
+
+    def update_task(self, task_id: int, task_in: TaskUpdate) -> TaskEntity | None:
+        """Actualiza el estado, prioridad o agrega un comentario a una tarea."""
+        return self._repository.update(task_id, task_in)
 
     def delete_task(self, task_id: int) -> bool:
         """Elimina una tarea por su identificador."""

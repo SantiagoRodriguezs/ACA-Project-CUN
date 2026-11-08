@@ -7,7 +7,13 @@ from fastapi.responses import HTMLResponse
 
 from app.api.dependencies import get_task_service, verify_api_key
 from app.core.config import settings
-from app.domain.entities import TaskCreate, TaskEntity, TaskPriority, TaskStatus
+from app.domain.entities import (
+    TaskCreate,
+    TaskEntity,
+    TaskPriority,
+    TaskStatus,
+    TaskUpdate,
+)
 from app.services.task_service import TaskService
 
 FRONTEND_HTML_PATH = Path(__file__).resolve().parent.parent / "web" / "index.html"
@@ -91,6 +97,26 @@ async def get_task_endpoint(
             detail=f"La tarea con ID {task_id} no existe.",
         )
     return task
+
+
+@tasks_router.patch(
+    "/{task_id}",
+    response_model=TaskEntity,
+    summary="Actualizar estado, prioridad o agregar comentario",
+)
+async def update_task_endpoint(
+    task_id: int,
+    payload: TaskUpdate,
+    service: TaskService = Depends(get_task_service),
+) -> TaskEntity:
+    """Actualiza el estado, prioridad o anexa un comentario a una tarea existente."""
+    updated = service.update_task(task_id, payload)
+    if updated is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"La tarea con ID {task_id} no existe.",
+        )
+    return updated
 
 
 @tasks_router.delete(

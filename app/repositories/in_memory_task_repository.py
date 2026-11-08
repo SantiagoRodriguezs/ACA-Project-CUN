@@ -2,7 +2,13 @@
 
 from datetime import datetime, timezone
 
-from app.domain.entities import TaskCreate, TaskEntity, TaskPriority, TaskStatus
+from app.domain.entities import (
+    TaskCreate,
+    TaskEntity,
+    TaskPriority,
+    TaskStatus,
+    TaskUpdate,
+)
 
 
 class InMemoryTaskRepository:
@@ -43,6 +49,28 @@ class InMemoryTaskRepository:
         if priority is not None:
             items = [item for item in items if item.priority == priority]
         return items
+
+    def update(self, task_id: int, task_update: TaskUpdate) -> TaskEntity | None:
+        """Actualiza estado, prioridad y/o agrega comentario a una tarea existente."""
+        current = self._storage.get(task_id)
+        if current is None:
+            return None
+
+        updated_comments = list(current.comments)
+        if task_update.comment:
+            updated_comments.append(task_update.comment.strip())
+
+        updated_entity = TaskEntity(
+            id=current.id,
+            title=current.title,
+            description=current.description,
+            priority=task_update.priority if task_update.priority else current.priority,
+            status=task_update.status if task_update.status else current.status,
+            created_at=current.created_at,
+            comments=updated_comments,
+        )
+        self._storage[task_id] = updated_entity
+        return updated_entity
 
     def delete(self, task_id: int) -> bool:
         """Elimina una tarea si existe en el almacén."""
