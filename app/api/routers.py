@@ -1,12 +1,16 @@
 """Controladores y endpoints HTTP de la API."""
 
+from pathlib import Path
+
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import RedirectResponse
+from fastapi.responses import HTMLResponse
 
 from app.api.dependencies import get_task_service, verify_api_key
 from app.core.config import settings
 from app.domain.entities import TaskCreate, TaskEntity, TaskPriority, TaskStatus
 from app.services.task_service import TaskService
+
+FRONTEND_HTML_PATH = Path(__file__).resolve().parent.parent / "web" / "index.html"
 
 health_router = APIRouter(tags=["Health"])
 tasks_router = APIRouter(
@@ -18,11 +22,14 @@ tasks_router = APIRouter(
 
 @health_router.get(
     "/",
+    response_class=HTMLResponse,
     include_in_schema=False,
 )
-async def root_redirect() -> RedirectResponse:
-    """Redirige automáticamente la raíz hacia la interfaz interactiva Swagger UI (/docs)."""
-    return RedirectResponse(url="/docs")
+async def serve_frontend() -> HTMLResponse:
+    """Sirve la interfaz gráfica web (Frontend) del sistema EduTasks."""
+    html_content = FRONTEND_HTML_PATH.read_text(encoding="utf-8")
+    return HTMLResponse(content=html_content)
+
 
 
 

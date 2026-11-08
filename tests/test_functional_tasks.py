@@ -4,17 +4,19 @@ import pytest
 from fastapi.testclient import TestClient
 
 
-def test_root_redirects_to_docs(client: TestClient) -> None:
-    """Verifica que la ruta raíz redirija automáticamente a /docs."""
+def test_root_serves_frontend_ui_returns_200_ok(client: TestClient) -> None:
+    """Verifica que la ruta raíz sirva la interfaz gráfica web (Frontend)."""
     # Arrange
     endpoint = "/"
 
     # Act
-    response = client.get(endpoint, follow_redirects=False)
+    response = client.get(endpoint)
 
     # Assert
-    assert response.status_code == 307
-    assert response.headers["location"] == "/docs"
+    assert response.status_code == 200
+    assert "EduTasks" in response.text
+    assert "text/html" in response.headers["content-type"]
+
 
 
 def test_health_check_returns_200_ok(client: TestClient) -> None:

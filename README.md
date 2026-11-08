@@ -21,6 +21,8 @@ ACA-Project-CUN/
 │   │   └── in_memory_task_repository.py # Persistencia en memoria
 │   ├── services/
 │   │   └── task_service.py           # Casos de uso y reglas de negocio
+│   ├── web/
+│   │   └── index.html                # Interfaz gráfica web (Frontend interactivo)
 │   └── main.py                       # Punto de entrada de la aplicación
 ├── tests/
 │   ├── conftest.py                   # Fixtures aisladas para pruebas
@@ -41,10 +43,11 @@ ACA-Project-CUN/
 .\.venv\Scripts\Activate.ps1
 ```
 
-### 2. Iniciar el servidor de desarrollo (Swagger UI)
+### 2. Iniciar el servidor de desarrollo (Frontend + API)
 ```powershell
 uvicorn app.main:app --reload
 ```
+- **Interfaz Gráfica Web (Frontend):** `http://127.0.0.1:8000`
 - **Swagger UI interactivo:** `http://127.0.0.1:8000/docs`
 - **Credencial de prueba (`X-API-KEY`):** `CUN-CALIDAD-2026-SECRET`
 
