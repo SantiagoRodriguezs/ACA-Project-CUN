@@ -68,8 +68,10 @@ def test_create_task_valid_payload_returns_201_created(
     [
         {"title": "AB", "priority": "MEDIA"},  # Título menor a 3 caracteres
         {"title": "", "priority": "ALTA"},  # Título vacío
+        {"title": "A" * 105, "priority": "MEDIA"},  # Título mayor a 100 caracteres
         {"title": "Tarea válida", "priority": "URGENTE"},  # Prioridad inexistente
         {"description": "Sin título obligatorio"},  # Falta campo requerido
+        {"title": 12345},  # Tipo de dato inválido
     ],
 )
 def test_create_task_invalid_payload_returns_422_unprocessable_entity(
