@@ -9,10 +9,6 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 import coverage
 import pytest
-from fastapi.testclient import TestClient
-
-from app.core.config import settings
-from app.main import app
 
 
 class _TestResultPlugin:
@@ -30,7 +26,7 @@ class _TestResultPlugin:
 
 
 def measure_coverage_and_pass_rate() -> tuple[float, int, int, int, int]:
-    """Ejecuta la suite de pytest midiendo cobertura real y tasa de aprobación.
+    """Ejecuta la suite de pytest iniciando coverage ANTES de importar el paquete app.
 
     Returns:
         Tupla con (porcentaje_cobertura, lineas_cubiertas, total_lineas, tests_aprobados, total_tests).
@@ -39,7 +35,10 @@ def measure_coverage_and_pass_rate() -> tuple[float, int, int, int, int]:
     plugin = _TestResultPlugin()
 
     cov.start()
-    pytest.main(["-q", "--disable-warnings"], plugins=[plugin])
+    pytest.main(
+        ["-q", "-o", "addopts=-q --disable-warnings"],
+        plugins=[plugin],
+    )
     cov.stop()
     cov.save()
 
@@ -68,6 +67,11 @@ def measure_response_time(iterations: int = 100) -> tuple[float, float, float]:
     Returns:
         Tupla con (promedio_ms, minimo_ms, maximo_ms).
     """
+    from fastapi.testclient import TestClient
+
+    from app.core.config import settings
+    from app.main import app
+
     client = TestClient(app)
     headers = {settings.api_key_header: settings.api_secret_key}
     latencies_ms: list[float] = []

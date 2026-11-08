@@ -69,7 +69,7 @@ def create_application() -> FastAPI:
     ) -> JSONResponse:
         """Retorna errores de validación HTTP 422 explicados en lenguaje natural."""
         return JSONResponse(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status_code=status.HTTP_422_UNPROCESSABLE_CONTENT,
             content={"detail": format_validation_error(exc)},
         )
 
