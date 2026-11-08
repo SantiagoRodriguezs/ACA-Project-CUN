@@ -1,6 +1,7 @@
 """Controladores y endpoints HTTP de la API."""
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import RedirectResponse
 
 from app.api.dependencies import get_task_service, verify_api_key
 from app.core.config import settings
@@ -13,6 +14,16 @@ tasks_router = APIRouter(
     tags=["Tasks"],
     dependencies=[Depends(verify_api_key)],
 )
+
+
+@health_router.get(
+    "/",
+    include_in_schema=False,
+)
+async def root_redirect() -> RedirectResponse:
+    """Redirige automáticamente la raíz hacia la interfaz interactiva Swagger UI (/docs)."""
+    return RedirectResponse(url="/docs")
+
 
 
 @health_router.get(
