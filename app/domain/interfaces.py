@@ -55,3 +55,4 @@ class TaskRepositoryProtocol(Protocol):
 
     def clear(self) -> None:
         """Limpia todas las tareas almacenadas."""
+

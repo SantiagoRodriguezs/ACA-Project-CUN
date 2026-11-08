@@ -91,3 +91,4 @@ async def delete_task_endpoint(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"La tarea con ID {task_id} no existe.",
         )
+

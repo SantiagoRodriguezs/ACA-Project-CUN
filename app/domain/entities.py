@@ -65,3 +65,4 @@ class TaskEntity(TaskCreate):
 
     id: int = Field(..., description="Identificador único numérico.")
     created_at: datetime = Field(..., description="Fecha de creación en UTC.")
+

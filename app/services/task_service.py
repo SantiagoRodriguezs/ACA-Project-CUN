@@ -51,3 +51,4 @@ class TaskService:
     def reset_tasks(self) -> None:
         """Limpia todas las tareas registradas."""
         self._repository.clear()
+

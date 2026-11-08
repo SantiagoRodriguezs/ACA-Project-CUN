@@ -55,3 +55,4 @@ class InMemoryTaskRepository:
         """Reinicia el almacén en memoria."""
         self._storage.clear()
         self._next_id = 1
+

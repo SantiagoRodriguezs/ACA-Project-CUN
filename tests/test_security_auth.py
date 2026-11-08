@@ -46,3 +46,4 @@ def test_access_protected_endpoint_with_invalid_api_key_returns_401_unauthorized
     # Assert
     assert response.status_code == 401
     assert "inválida" in response.json()["detail"]
+

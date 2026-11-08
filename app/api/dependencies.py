@@ -46,3 +46,4 @@ async def verify_api_key(
             detail="Acceso denegado: la credencial X-API-KEY es inválida.",
         )
     return api_key
+

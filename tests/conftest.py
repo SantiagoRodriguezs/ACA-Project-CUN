@@ -34,3 +34,4 @@ def client(isolated_task_service: TaskService) -> Generator[TestClient, None, No
 def valid_auth_headers() -> dict[str, str]:
     """Retorna las cabeceras HTTP con la credencial de seguridad válida."""
     return {settings.api_key_header: settings.api_secret_key}
+

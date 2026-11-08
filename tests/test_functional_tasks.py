@@ -134,3 +134,4 @@ def test_get_and_delete_task_lifecycle_succeeds(
     assert del_res.status_code == 204
     assert get_missing.status_code == 404
     assert del_missing.status_code == 404
+

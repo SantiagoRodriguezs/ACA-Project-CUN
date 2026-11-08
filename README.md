@@ -28,9 +28,6 @@ ACA-Project-CUN/
 │   └── test_security_auth.py         # Prueba 2: Pruebas de Seguridad (AAA)
 ├── scripts/
 │   └── collect_metrics.py            # Medición automatizada de las 3 métricas
-├── docs/
-│   ├── INFORME_ACA_APA7.md           # Documento técnico completo bajo normas APA 7.0
-│   └── GUION_VIDEO_PITCH.md          # Guion estructurado para el video de 5 minutos
 ├── pyproject.toml                    # Configuración de pytest y coverage
 └── requirements.txt                  # Dependencias del proyecto
 ```
